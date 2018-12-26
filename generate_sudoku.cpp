@@ -1,3 +1,4 @@
+
 #include "pch.h"
 #include <fstream>
 #include <iostream>
@@ -11,7 +12,7 @@ extern const long OUTARRSIZE = 1000;
 char outarray[OUTARRSIZE] = { 0 };
 int outarray_cur = 0;
 int out_puzzle_remain = 0;
-ofstream outarray_file;
+ofstream outarray_file("sudoku.txt");
 
 char permutation[9] = { '1','2','3','4','5','6','9','8', '7' };
 int colswap[9] = { 0,1,2,3,4,5,6,7,8 };
@@ -305,25 +306,4 @@ void next_swap()
 	// if fails, reset combination(done in update_combination()) and update seeds in a circle.
 	seed_cur += 1;
 	seed_cur = seed_cur % SEED_CNT;
-}
-
-void generate_sudoku() {
-	ofstream outarray_file("sudoku.txt");
-
-	while (out_puzzle_remain > 0)
-	{
-		append_to_outarray(seed_cur, colswap, rowswap, permutation);
-		out_puzzle_remain--;
-
-		if (out_puzzle_remain == 0)
-		{
-			write_outputarray_no_newline();
-			break;
-		}
-		else if (outarray_cur > OUTARRSIZE - 200)
-			write_outputarray();
-
-		next_swap();
-	}
-	outarray_file.close();
 }
