@@ -15,26 +15,29 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="generate_sudoku.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="generate_sudoku.h">
+    <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="sudoku.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="generate_sudoku.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="sudoku.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="puzzles.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
