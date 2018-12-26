@@ -327,5 +327,8 @@ void generate_sudoku() {
 
 		next_swap();
 	}
+	outarray_file.flush();
 	outarray_file.close();
+
+	return;
 }

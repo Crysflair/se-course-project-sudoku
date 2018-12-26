@@ -153,14 +153,17 @@
   <ItemGroup>
     <ClInclude Include="generate_sudoku.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="solve_sudoku.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generate_sudoku.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="solve_sudoku.cpp" />
     <ClCompile Include="sudoku.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="puzzles.txt" />
+    <Text Include="solutions.txt" />
     <Text Include="sudoku.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

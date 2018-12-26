@@ -21,6 +21,9 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="solve_sudoku.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sudoku.cpp">
@@ -32,12 +35,18 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="solve_sudoku.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="sudoku.txt">
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="puzzles.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="solutions.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
