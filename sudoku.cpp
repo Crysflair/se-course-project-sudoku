@@ -13,8 +13,7 @@ using namespace std;
 char map[9][10] = { 0 };
 char map_ans[200] = { 0 };
 
-
-
+bool valid[9][9][10] = { 0 }; //row, column, number(1~9)
 
 int check_if_determined(bool valid_x_y[10])
 {
@@ -35,7 +34,7 @@ int check_if_determined(bool valid_x_y[10])
 	}
 
 	if (hitcnt == 1)
-		return result; //1~9
+		return result;
 
 	// checking
 	if (hitcnt == 0)
@@ -76,25 +75,9 @@ void visualize_valid_for_num(bool valid[9][9][10], int num)
 		cout << endl;
 	}
 }
-void visualize_determined_from_valid(bool valid[9][9][10])
-{
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			int num = check_if_determined(valid[i][j]);
-			if (num > 0)
-				cout << num << " ";
-			else
-				cout << "_ ";
-		}
-		cout << endl;
-	}
-	cout << endl;
-}
+
 void valid_deduction(bool valid[9][9][10], int row, int col, int eliminated_number)
 {
-	// description: this is a shalow deduction.
 	// usage assumption: (i,j) is currently determined as a number.
 
 	// testing:
@@ -102,18 +85,26 @@ void valid_deduction(bool valid[9][9][10], int row, int col, int eliminated_numb
 		cout << "elimination uniqueness error!" << endl;
 	
 	// debug{
-	//cout << "deduction called. map(" << row << "," << col << ") = " << eliminated_number << endl;
-	//cout << "before elimination:" << endl;
-	//visualize_valid_for_num(valid, eliminated_number);
+	cout << "deduction called. map(" << row << "," << col << ") = " << eliminated_number << endl;
+	cout << "before elimination:" << endl;
+	visualize_valid_for_num(valid, eliminated_number);
 	// debug}
 
-	
+
+	int tmp = -1;
 	// same row elimination
 	for (int j = 0; j < 9; j++)
 	{
 		if (j == col)
 			continue;
-		valid[row][j][eliminated_number] = false;		
+		valid[row][j][eliminated_number] = false;
+		tmp = check_if_determined(valid[row][j]);
+		if (tmp > 0)
+			valid_deduction(valid, row, j, tmp);
+		else if (tmp == 0) {
+			visualize_valid_for_grid(valid, row, j);
+		}
+		
 	}
 	// same colomn elimination
 	for (int i = 0; i < 9; i++)
@@ -121,6 +112,12 @@ void valid_deduction(bool valid[9][9][10], int row, int col, int eliminated_numb
 		if (i == row)
 			continue;
 		valid[i][col][eliminated_number] = false;
+		tmp = check_if_determined(valid[i][col]);
+		if (tmp > -1)
+			valid_deduction(valid, i, col, tmp);
+		else if (tmp == 0) {
+			visualize_valid_for_grid(valid, i, col);
+		}
 	}
 	// same block elimination
 	for (int i = (row / 3) * 3; i < (row / 3) * 3 + 3; i++)
@@ -130,58 +127,30 @@ void valid_deduction(bool valid[9][9][10], int row, int col, int eliminated_numb
 			if (i == row && j == col)
 				continue;
 			valid[i][j][eliminated_number] = 0;
+			tmp = check_if_determined(valid[i][j]);
+			if (tmp > -1)
+				valid_deduction(valid, i, j, tmp);
+			else if (tmp==0) {
+				visualize_valid_for_grid(valid, i, j);
+			}
 		}
 	}
+
 	// debug{
-	//cout << "after elimination:" << endl;
-	//visualize_valid_for_num(valid, eliminated_number);
-	//cout << "--------------------" << endl;
+	cout << "after elimination:" << endl;
+	visualize_valid_for_num(valid, eliminated_number);
+	cout << "--------------------" << endl;
 	return;
 	// debug}
 }
 
-bool check_no_empty(bool valid[9][9][10])
+void determine_num(bool valid_x_y[10], int eliminated_number)
 {
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			int tmp = check_if_determined(valid[i][j]);
-			if (tmp == 0)
-			{
-				return false;
-			}
-		}
-	}
-	return true;
+	memset(valid_x_y, false, 10);
+	valid_x_y[eliminated_number] = true;
 }
 
-bool determine_num(bool valid[9][9][10],int row,int col, int eliminated_number)
-{
-	memset(valid[row][col], false, 10);
-	valid[row][col][eliminated_number] = true;
-	valid_deduction(valid, row, col, eliminated_number);
-	return check_no_empty(valid);
-}
-
-void second_sweep(bool valid[9][9][10])
-{
-	int deduction_cnt = 0; 
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			int tmp = check_if_determined(valid[i][j]);
-			if (tmp > 0)
-			{
-				determine_num(valid, i, j, tmp);
-				deduction_cnt++;
-			}
-		}
-	}cout << "second deduction cnt: " << deduction_cnt << endl;
-}
-
-void map_to_valid(bool valid[9][9][10])
+void map_to_valid()
 {
 	// description:
 	// 1. this function generate a 'valid' bool matrix for a 'map' char matrix.
@@ -190,30 +159,29 @@ void map_to_valid(bool valid[9][9][10])
 	// at first, every place is possible
 	memset(valid, true, sizeof(valid));
 
-	int deduction_cnt = 0;
+	// if reward testing variable
+	int root_deduction_cnt = 0;
 
-	// map deduction
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
 			if (map[i][j] != '0')
 			{
-				determine_num(valid, i, j, map[i][j]-'0'); // TODO :check if all single eliminate functions are merged with determine_num.
-				deduction_cnt++;
+				determine_num(valid[i][j], map[i][j]-'0');
+				valid_deduction(valid, i, j, map[i][j] - '0');
+				root_deduction_cnt++;
 			}
 		}
-	}cout << "map deduction cnt: " << deduction_cnt << endl;
+	}
 
-	// a second sweep
-	second_sweep(valid);
-
+	cout << "among all deductions," << root_deduction_cnt << " is trivial" << endl;
 }
 
-void restore_matrix(bool valid[9][9][10], bool myvalid[9][9][10])
+void restore_number(bool valid_x_y[10], bool myvalid_x_y[10])
 {
 	// only for readability.
-	memcpy(myvalid, valid, 810);
+	memcpy(myvalid_x_y, valid_x_y, 10);
 }
 
 void valid_to_map_ans(bool valid[9][9][10])
@@ -246,65 +214,41 @@ void valid_to_map_ans(bool valid[9][9][10])
 	map_ans[map_ans_cur++] = '\0';
 }
 
-void find_next_not_determined(bool valid[9][9][10], int row, int col, int& nextrow, int& nextcol)
-{
-	for (int i = row; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			if (check_if_determined(valid[i][j]) < 0)
-			{
-				nextrow = i;
-				nextcol = j;
-				return;
-			}
-		}
-	}
-	nextrow = 9; nextcol = 0;
-	return;
-}
-
 bool back_track(bool valid[9][9][10], int row, int col)
 {
 	if (row == 9)
+	{
+		// finish working!
+		valid_to_map_ans(valid);
 		return true;
+	}
 
-
-
-	for (int blank = 0; blank < row * 9 + col; blank++) cout << " ";
-	cout << "start back track. row,col = " << row << ", " << col << endl;
-
-	int nextrow, nextcol;
+	// start back tracking
 	bool myvalid[9][9][10]; memcpy(myvalid, valid, 810);
+	
+	int nextrow, nextcol;
+	if (col < 9)
+	{
+		nextrow = row;
+		nextcol = col + 1;
+	}
+	else
+	{
+		nextrow = row + 1;
+		nextcol = 0;
+	}
 
 	for (int num = 1; num <= 9; num++)
 	{
 		if (valid[row][col][num] == true)
 		{
-			//set this value
-			for (int blank = 0; blank < row * 9 + col; blank++) cout << " ";
-			cout << "explore number:" << num << endl;
-
-			if (determine_num(myvalid, row, col, num))
-			{
-
-				// print current assumption
-				visualize_determined_from_valid(myvalid);
-
-				//explore that value
-				find_next_not_determined(myvalid, row, col, nextrow, nextcol);
-
-				if (back_track(myvalid, nextrow, nextcol))
-					return true;
-				else {
-					restore_matrix(valid, myvalid);
-					cout << "a failed expand!" << endl;
-				}
-			}
-			else
-			{
-				restore_matrix(valid, myvalid);
-				cout << "a failed determine!" << endl;
+			//explore that value
+			determine_num(myvalid[row][col], num);
+			if (back_track(myvalid, nextrow, nextcol))
+				return true;
+			else {
+				restore_number(valid[row][col], myvalid[row][col]);
+				continue;
 			}
 		}
 		else
@@ -315,10 +259,7 @@ bool back_track(bool valid[9][9][10], int row, int col)
 
 bool solve_sudoku()
 {
-	
-
-	bool valid[9][9][10] = { 0 };
-	map_to_valid(valid);
+	map_to_valid();
 
 	bool is_succeed = back_track(valid, 0, 0);
 
