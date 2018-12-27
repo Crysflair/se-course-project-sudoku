@@ -2,6 +2,7 @@
 #ifndef SOLVE_SUDOKU_H
 #define SOLVE_SUDOKU_H
 
+<<<<<<< HEAD
 using namespace std;
 
 //extern bool rows_available[9][10];
@@ -19,5 +20,8 @@ using namespace std;
 //bool solve_sudoku(int row, int col);
 
 void solve_sudoku_wrapper(ifstream &puzzles);
+=======
+bool solve_sudoku_wrapper();
+>>>>>>> parent of 1984df4... finish performance optimization
 
 #endif

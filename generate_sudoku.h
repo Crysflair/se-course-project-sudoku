@@ -3,6 +3,11 @@
 #ifndef GENERATE_SUDOKU_H
 #define GENERATE_SUDOKU_H
 
+<<<<<<< HEAD
+=======
+extern int out_puzzle_remain;
+void generate_sudoku();
+>>>>>>> parent of 1984df4... finish performance optimization
 
 extern char outarray[];
 extern int outarray_cur;
