@@ -1,21 +1,24 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include "generate_sudoku.h"
 
 using namespace std;
 
 const int SEED_CNT = 5;
-const long OUTARRSIZE = 1000000000;
+const int OUTARRSIZE = 1000000000;
 
 char outarray[OUTARRSIZE] = { 0 };
 int outarray_cur = 0;
+
 long int out_puzzle_remain = 0;
 ofstream outarray_file("sudoku.txt");
 
 char permutation[9] = { '1','2','3','4','5','6','9','8', '7' };
 int colswap[9] = { 0,1,2,3,4,5,6,7,8 };
 int rowswap[9] = { 0,1,2,3,4,5,6,7,8 };
-int combination_345[6][3] = {
+
+const int combination_345[6][3] = {
 	3,4,5,
 	5,4,3,
 	5,3,4,
@@ -23,7 +26,7 @@ int combination_345[6][3] = {
 	4,3,5,
 	4,5,3
 };
-int combination_678[6][3] = {
+const int combination_678[6][3] = {
 	6,7,8,
 	8,7,6,
 	8,6,7,
@@ -33,7 +36,7 @@ int combination_678[6][3] = {
 };
 
 int seed_cur = 0;
-char seeds[SEED_CNT][9][9] = {
+const char seeds[SEED_CNT][9][9] = {
 '7', '6', '1', '5', '9', '3', '4', '8', '2',
 '8', '3', '4', '6', '2', '7', '9', '1', '5',
 '2', '5', '9', '1', '4', '8', '3', '7', '6',
@@ -86,13 +89,13 @@ char seeds[SEED_CNT][9][9] = {
 
 
 };
+
 void my_swap(char &a, char &b)
 {
 	a = a + b;
 	b = a - b;
 	a = a - b;
 }
-
 
 void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permutation[9])
 {
@@ -129,6 +132,12 @@ void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permu
 	my_swap(permutation[6], permutation[8]);
 }
 
+void clear_out_array()
+{
+	outarray_cur = 0;
+	outarray[outarray_cur] = '\0';
+}
+
 void write_outputarray()
 {
 	// usage assumption: 
@@ -150,7 +159,7 @@ void write_outputarray()
 
 	outarray[outarray_cur] = '\0';
 	outarray_file << outarray;
-	outarray_cur = 0;
+	clear_out_array();
 }
 
 void write_outputarray_no_newline()
@@ -324,6 +333,5 @@ void generate_sudoku(long int out_puzzles) {
 
 		next_swap();
 	}
-
 	return;
 }

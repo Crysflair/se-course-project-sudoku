@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include "solve_sudoku.h"
 
 
 using namespace std;
@@ -9,6 +10,7 @@ bool rows_available[9][10] = { true };
 bool cols_available[9][10] = { true };
 bool block_available[9][10] = { true };
 int ans[9][9] = { 0 };
+
 ofstream solutions("sudoku.txt");
 
 void refresh_everything()

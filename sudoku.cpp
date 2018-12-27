@@ -12,8 +12,35 @@
 
 using namespace std;
 
+//void cheater()
+//{
+//	int colswap_test[3][9] = {
+//	0,1,2,3,4,5,6,7,8,
+//	0,2,1,3,4,5,6,8,7,
+//	3,4,5,6,7,8,0,1,2
+//	};
+//	int rowswap_test[3][9] = {
+//		0,1,2,3,4,5,6,7,8,
+//		0,2,1,3,4,5,6,8,7,
+//		3,4,5,6,7,8,0,1,2
+//	};
+//	char permutation_test[3][9] = {
+//		'1','2','3','4','5','6','9','8','7',
+//		'9','5','6','3','2','1','4','7','8',
+//		'4','5','6','7','8','1','2','9','3'
+//	};
+//	for (int i = 0; i < 3; i++)
+//	{
+//		clear_out_array();
+//		append_to_outarray(0, colswap_test[i], rowswap_test[i], permutation_test[i]);
+//		cout << outarray;
+//	}
+//}
+
 int main(int argc, char* argv[])
 {
+	//cheater();
+
 	if (argc != 3)
 	{
 		cout << "Input cnt error. please enter '-c integer' or '-s absolute_path'\n";
