@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <iostream>
 #include <cstring>
 #include <fstream>
@@ -12,10 +11,7 @@ bool cols_available[9][10] = { true };
 bool block_available[9][10] = { true };
 int ans[9][9] = { 0 };
 
-<<<<<<< HEAD
 ofstream solutions("sudoku.txt");
-=======
->>>>>>> parent of 1984df4... finish performance optimization
 
 void refresh_everything()
 {
@@ -62,7 +58,7 @@ void revert_number(int row, int col, int num)
 	block_available[row / 3 * 3 + col / 3][num] = true;
 }
 
-void output_ans(ofstream & solutions)
+void output_ans()
 {
 	char buffer[200];
 	int buffer_cur = 0;
@@ -108,13 +104,11 @@ bool solve_sudoku(int row, int col)
 }
 
 
-void solve_sudoku_wrapper()
+void solve_sudoku_wrapper(ifstream &puzzles)
 {
-	ifstream puzzles("puzzles.txt");
+	
 	char line_buffer[20] = { 0 };
-
-
-	ofstream solutions("solutions.txt");
+	
 
 	bool is_first_puzzle = true;
 	long puzzles_cnt = 0;
@@ -143,12 +137,12 @@ void solve_sudoku_wrapper()
 		{
 			if (is_first_puzzle)
 			{
-				output_ans(solutions);
+				output_ans();
 				is_first_puzzle = false;
 			}
 			else {
 				solutions << "\n\n";
-				output_ans(solutions);
+				output_ans();
 			}
 		}
 		else

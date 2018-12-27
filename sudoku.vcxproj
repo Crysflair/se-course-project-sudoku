@@ -96,11 +96,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-<<<<<<< HEAD
       <Profile>false</Profile>
       <OptimizeReferences>false</OptimizeReferences>
-=======
->>>>>>> parent of 1984df4... finish performance optimization
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,6 +113,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -159,12 +157,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="generate_sudoku.h" />
-    <ClInclude Include="pch.h" />
     <ClInclude Include="solve_sudoku.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generate_sudoku.cpp" />
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="solve_sudoku.cpp" />
     <ClCompile Include="sudoku.cpp" />
   </ItemGroup>

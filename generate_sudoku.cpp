@@ -1,5 +1,3 @@
-
-#include "pch.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -7,7 +5,6 @@
 
 using namespace std;
 
-<<<<<<< HEAD
 const int SEED_CNT = 5;
 const int OUTARRSIZE = 1000000000;
 
@@ -16,15 +13,6 @@ int outarray_cur = 0;
 
 long int out_puzzle_remain = 0;
 ofstream outarray_file("sudoku.txt");
-=======
-extern const int SEED_CNT = 5;
-extern const long OUTARRSIZE = 1000;
-
-char outarray[OUTARRSIZE] = { 0 };
-int outarray_cur = 0;
-int out_puzzle_remain = 0;
-ofstream outarray_file;
->>>>>>> parent of 1984df4... finish performance optimization
 
 char permutation[9] = { '1','2','3','4','5','6','9','8', '7' };
 int colswap[9] = { 0,1,2,3,4,5,6,7,8 };
@@ -102,7 +90,6 @@ const char seeds[SEED_CNT][9][9] = {
 
 };
 
-<<<<<<< HEAD
 void my_swap(char &a, char &b)
 {
 	a = a + b;
@@ -110,8 +97,6 @@ void my_swap(char &a, char &b)
 	a = a - b;
 }
 
-=======
->>>>>>> parent of 1984df4... finish performance optimization
 void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permutation[9])
 {
 	// usage assumption: 
@@ -126,20 +111,17 @@ void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permu
 
 	// warning: this function always end with a blank line.
 
-	// checking
-	if (seed_num > SEED_CNT || outarray_cur > OUTARRSIZE - 200)
-		cout << "error!" << endl;
-
-	// TODO: if std or self actualization is faster?
-	swap(permutation[6], permutation[8]);
+	my_swap(permutation[6], permutation[8]);
 
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			char number_origin = seeds[seed_num][rowswap[i]][colswap[j]];
+			/*char number_origin = seeds[seed_num][rowswap[i]][colswap[j]];
 			int number_permu = permutation[number_origin - '1'];
-			outarray[outarray_cur++] = number_permu;
+			outarray[outarray_cur++] = number_permu;*/
+
+			outarray[outarray_cur++] = permutation[seeds[seed_num][rowswap[i]][colswap[j]] - '1'];
 			outarray[outarray_cur++] = ' ';
 		}
 		outarray_cur--;
@@ -147,7 +129,7 @@ void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permu
 	}
 	outarray[outarray_cur++] = '\n';
 
-	swap(permutation[6], permutation[8]);
+	my_swap(permutation[6], permutation[8]);
 }
 
 void clear_out_array()
@@ -165,8 +147,6 @@ void write_outputarray()
 	// description: 
 	// 1. called when outarray runs out of space
 	// 2. output it and reset outarray.
-
-	// TODO : test output to file
 
 	// global: outarray, outarray_cur
 
@@ -190,17 +170,15 @@ void write_outputarray_no_newline()
 	// description: 
 	// 1. called when outarray runs out of space, output it and reset outarray.
 
-	// TODO : test output to file
-
 	// global: outarray, outarray_cur
 
 	// checking
 	if (outarray_cur < 50 || out_puzzle_remain != 0)
 		cout << "error!" << endl;
 	else
-		cout << "write no new line" << endl;
+		cout << "finish writing generated puzzles to file!" << endl;
 
-	outarray_cur -= 2; // TODO: is a '\n' needed?
+	outarray_cur -= 2;
 	outarray[outarray_cur] = '\0';
 	outarray_file << outarray;
 	outarray_cur = 0;
@@ -337,10 +315,9 @@ void next_swap()
 	seed_cur = seed_cur % SEED_CNT;
 }
 
-void generate_sudoku() {
+void generate_sudoku(long int out_puzzles) {
 
-	ofstream outarray_file("sudoku.txt");
-
+	out_puzzle_remain = out_puzzles;
 	while (out_puzzle_remain > 0)
 	{
 		append_to_outarray(seed_cur, colswap, rowswap, permutation);
@@ -356,11 +333,5 @@ void generate_sudoku() {
 
 		next_swap();
 	}
-<<<<<<< HEAD
-=======
-	outarray_file.flush();
-	outarray_file.close();
-
->>>>>>> parent of 1984df4... finish performance optimization
 	return;
 }
