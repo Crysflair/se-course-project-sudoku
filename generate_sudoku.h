@@ -10,15 +10,15 @@ extern int outarray_cur;
 //
 //
 //extern char permutation[9];
-//extern int colswap[9];
-//extern int rowswap[9];
+extern int colswap[9];
+extern int rowswap[9];
 //
 void clear_out_array();
 void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permutation[9]);
-//int update_combination();
+int update_combination();
 //
 //extern int seed_cur;
-//// void my_swap(char &a, char &b); 
+void my_swap(char &a, char &b); 
 //// TODO : see if need to include sub function in header.
 //
 //void clear_out_array();
@@ -27,6 +27,6 @@ void append_to_outarray(int seed_num, int colswap[9], int rowswap[9], char permu
 //int update_combination();
 //void next_swap();
 
-void generate_sudoku(long int);
+long int generate_sudoku(long int);
 #endif
 

@@ -315,7 +315,7 @@ void next_swap()
 	seed_cur = seed_cur % SEED_CNT;
 }
 
-void generate_sudoku(long int out_puzzles) {
+long int generate_sudoku(long int out_puzzles) {
 
 	out_puzzle_remain = out_puzzles;
 	while (out_puzzle_remain > 0)
@@ -333,5 +333,5 @@ void generate_sudoku(long int out_puzzles) {
 
 		next_swap();
 	}
-	return;
+	return out_puzzle_remain;
 }

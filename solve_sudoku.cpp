@@ -40,7 +40,8 @@ void get_next_to_fill(int row, int col, int& nextrow, int& nextcol)
 				return;
 			}
 		}
-	nextrow = 9; return;
+	nextrow = 9;  nextcol = 0;
+	return;
 }
 
 bool if_valid(int row, int col, int num)
@@ -103,13 +104,11 @@ bool solve_sudoku(int row, int col)
 	return false;
 }
 
-
 void solve_sudoku_wrapper(ifstream &puzzles)
 {
 	
 	char line_buffer[20] = { 0 };
 	
-
 	bool is_first_puzzle = true;
 	long puzzles_cnt = 0;
 	while (puzzles)

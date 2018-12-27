@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 	if (argc != 3)
 	{
 		cout << "Input cnt error. please enter '-c integer' or '-s absolute_path'\n";
+		return 0;
 	}
 	if (strcmp(argv[1], "-c") == 0)
 	{
@@ -68,16 +69,16 @@ int main(int argc, char* argv[])
 		if (is_integer)
 		{
 			sscanf_s(argv[2], "%ld", &out_puzzles);
-			if (out_puzzles > 10000000)
+			if (out_puzzles > 10000000 || out_puzzles < 1)
 			{
-				cout << "too many sudoku creation! please enter a number smaller than 10000000!\n";
+				cout << "please enter a number smaller among 1 to 10000000!\n";
 				return 0;
 			}
 			cout << "generating " << out_puzzles << " sudokus.\n";
 			generate_sudoku(out_puzzles);
 		}
 		else
-			cout << "invalid input! please enter an integer smaller than 10000000!\n";
+			cout << "invalid input! please enter an integer among 1 to 10000000!\n";
 
 		return 0;
 	}
@@ -89,6 +90,7 @@ int main(int argc, char* argv[])
 		{
 			cout << "solving " << argv[2] << endl;
 			solve_sudoku_wrapper(puzzles);
+			return 0;
 		}
 		else
 			cout << "unable to open the file. please enter a valid file path.\n";
