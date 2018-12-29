@@ -4,6 +4,7 @@
 #include "solve_sudoku.h"
 
 
+
 using namespace std;
 
 bool rows_available[9][10] = { true };
@@ -15,10 +16,10 @@ ofstream solutions("sudoku.txt");
 
 void refresh_everything()
 {
-	memset(rows_available, true, 90);
-	memset(cols_available, true, 90);
-	memset(block_available, true, 90);
-	memset(ans, 0, 81);
+	memset(rows_available, true, 90*sizeof(rows_available[0][0]));
+	memset(cols_available, true, 90*sizeof(cols_available[0][0]));
+	memset(block_available, true, 90* sizeof(block_available[0][0]));
+	memset(ans, 0, 81*sizeof(ans[0][0]));
 }
 
 void set_number(int row, int col, int num)
@@ -104,6 +105,100 @@ bool solve_sudoku(int row, int col)
 	return false;
 }
 
+// debug
+/* 
+int input_cache[9][9];
+void save_input_cache() {
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			input_cache[i][j] = ans[i][j];
+		}
+	}
+}
+void visualize_cache() {
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			cout << input_cache[i][j] << " ";
+		}
+		cout << "\n";
+	}
+	cout << "\n";
+}
+bool judge_ans() {
+	for (int i = 0; i < 9; i++)
+	{	
+		// check each line
+		bool visited[9] = { false,false,false, false ,false,false ,false,false ,false };
+		for (int j = 0; j < 9; j++)
+		{
+			if (ans[i][j] > 0)
+			{
+				visited[ans[i][j] - 1] = true;
+			}
+			else return false;
+		}
+		for (int k = 0; k < 9; k++)
+		{
+			if (visited[k] == false)
+				return false;
+		}
+	}
+
+	for (int j = 0; j < 9; j++)
+	{
+		// check each col
+		bool visited[9] = { false,false,false, false ,false,false ,false,false ,false };
+		for (int i = 0; i < 9; i++)
+		{
+			if (ans[i][j] > 0)
+			{
+				visited[ans[i][j] - 1] = true;
+			}
+			else return false;
+		}
+		for (int k = 0; k < 9; k++)
+		{
+			if (visited[k] == false)
+				return false;
+		}
+	}
+
+	int block_base[9][2] = {
+		0,0, 3,0, 6,0,
+		0,3, 3,3, 6,3,
+		0,6, 3,6, 6,6
+	};
+	for (int block = 0; block < 9; block++)
+	{
+		int base_x = block_base[block][0];
+		int base_y = block_base[block][1];
+
+		bool visited[9] = { false,false,false, false ,false,false ,false,false ,false };
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (ans[base_x + i][base_y + j] > 0)
+				{
+					visited[ans[base_x + i][base_y + j] - 1] = true;
+				}
+				else return false;
+			}
+		}
+		for (int k = 0; k < 9; k++)
+		{
+			if (visited[k] == false)
+				return false;
+		}
+	}
+	return true;
+}
+*/
+
 void solve_sudoku_wrapper(ifstream &puzzles)
 {
 	
@@ -125,6 +220,8 @@ void solve_sudoku_wrapper(ifstream &puzzles)
 					set_number(i, j, line_buffer[2 * j] - '0');
 			}
 		}
+		//##// debug**********
+		//save_input_cache();
 
 		// get blank line, or sense eof.
 		puzzles.getline(line_buffer, 20);
@@ -134,6 +231,12 @@ void solve_sudoku_wrapper(ifstream &puzzles)
 		get_next_to_fill(0, 0, row, col);
 		if (solve_sudoku(row, col))
 		{
+			//##// debug**********
+			//if (!judge_ans())
+			//{
+			//	visualize_cache();
+			//}
+
 			if (is_first_puzzle)
 			{
 				output_ans();

@@ -1,7 +1,8 @@
+#include "generate_sudoku.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-#include "generate_sudoku.h"
+
 
 using namespace std;
 
