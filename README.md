@@ -1,6 +1,5 @@
 # Personal Project of SE course: sudoku
-This is a repository for the course project of software engineering(BIT, 2018).  
-It includes a program to automatically generate Sudoku problems. Possibly a GUI would be added. (Maybe never now)
+This is a repository for the course project of software engineering(BIT, 2018), aiming to automatically generate and solve Sudoku problems. Possibly a GUI would be added. (Maybe never now)
 link to blog: https://blog.csdn.net/qq_36965871/article/details/84898541
 
 ## Quick Start
